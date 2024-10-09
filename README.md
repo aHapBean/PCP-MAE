@@ -5,13 +5,11 @@
 
 [Arxiv](https://arxiv.org/abs/2408.08753)
 
-## PCP-MAE: Learning to Predict Centers for Point Masked Autoencoders (NeurIPS 2024 spotlight)
+## PCP-MAE: Learning to Predict Centers for Point Masked Autoencoders
 
 <div  align="center">    
  <img src="./figs/overview.jpg" width = "1100"  align=center />
 </div>
-
-
 
 ## 📰 News
 
