@@ -1,0 +1,51 @@
+optimizer : {
+  type: AdamW,
+  kwargs: {
+  lr : 0.0005,
+  weight_decay : 0.05
+}}
+
+scheduler: {
+  type: CosLR,
+  kwargs: {
+    epochs: 300,
+    initial_epochs : 10
+}}
+
+dataset : {
+  train : { _base_: cfgs/dataset_configs/ShapeNet-55.yaml,
+            others: {subset: 'train', npoints: 1024}},
+  val : { _base_: cfgs/dataset_configs/ShapeNet-55.yaml,
+            others: {subset: 'test', npoints: 1024}},
+  test : { _base_: cfgs/dataset_configs/ShapeNet-55.yaml,
+            others: {subset: 'test', npoints: 1024}}}
+
+model : {
+  NAME: PCP_MAE,
+  group_size: 32,
+  num_group: 64,
+  loss: cdl2,
+  pred_loss: l2, # l2 by default | l2, sml1, cos, l1
+  ita: 0.1,  # 0.1 by default
+  pred_pos_transformer_layer: 0,  # 0 by default
+  add_detach: True,  # True by default 
+  cls_token: False,  # False by default
+  aug: None,  # default None, | scale_translate, jitter, no_aug 
+  ablation: None,  # None by defualt | None, pred_pos_only_to_decoder, MAE_not_pred_pos_but_to_decoder, MAE_pred_pos_not_to_decoder, pred_pos_only, reconstruction_only  share_pos_embed: True,  # True by default
+  transformer_config: {
+    mask_ratio: 0.6,  
+    mask_type: 'rand',
+    trans_dim: 384,
+    encoder_dims: 384,
+    depth: 12,
+    drop_path_rate: 0.1,
+    num_heads: 6,
+    decoder_depth: 4,
+    decoder_num_heads: 6,
+  },
+  }
+
+npoints: 1024
+total_bs : 128
+step_per_update : 1
+max_epoch : 300
