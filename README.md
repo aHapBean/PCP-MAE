@@ -53,6 +53,80 @@
 The checkpoints and logs have been released on [Google Drive](https://drive.google.com/drive/folders/18E04xV5r4GtjhLGJIc9Ulo1F5DuOTYU6?usp=drive_link). 
 <!-- For fully reproduction of our reported results,  TODO added -->
 
+## Requirements
+PyTorch >= 1.7.0 < 1.11.0;
+python >= 3.7;
+CUDA >= 9.0;
+GCC >= 4.9;
+torchvision;
+
+```
+# Quick Start
+conda create -n pcpmae python=3.10 -y
+conda activate pcpmae
+
+# Install pytorch
+conda install pytorch==2.0.1 torchvision==0.15.2 cudatoolkit=11.8 -c pytorch -c nvidia
+# pip install torch==2.0.1+cu118 torchvision==0.15.2+cu118 -f https://download.pytorch.org/whl/torch_stable.html
+
+# Install required packages
+pip install -r requirements.txt
+```
+
+```
+# Install the extensions
+# Chamfer Distance & emd
+cd ./extensions/chamfer_dist
+python setup.py install --user
+cd ./extensions/emd
+python setup.py install --user
+# PointNet++
+pip install "git+https://github.com/erikwijmans/Pointnet2_PyTorch.git#egg=pointnet2_ops&subdirectory=pointnet2_ops_lib"
+```
+
+
+## Datasets
+
+We use ShapeNet, ScanObjectNN, ModelNet40 and ShapeNetPart in this work. See [DATASET.md](./DATASET.md) for details. For the S3DIS dataset, check the ACT ([ICLR 2023] Autoencoders as Cross-Modal Teachers: Can Pretrained 2D Image Transformers Help 3D Representation Learning?) for help.
+
+## Pre-training
+To pretrain PCP-MAE on ShapeNet training set, run the following command. If you want to try different models or masking ratios etc., first create a new config file, and pass its path to --config.
+
+```
+CUDA_VISIBLE_DEVICES=<GPU> python main.py --config cfgs/pretrain/base.yaml --exp_name <output_file_name>
+```
+## Fine-tuning
+
+To reproduce our results, you can run the experiment multiple times using different random seeds and record the highest accuracy. This procedure is consistent with the reproduction methods used in Point-MAE, ReCon, and other related approaches. 
+
+For clarity, we have provided the log file containing the classification results on the ScanObjectNN dataset in the './experiments' directory. Please note that even with the same seed, running the experiments on different machines may yield varying results.
+
+Fine-tuning on ScanObjectNN, run:
+```
+CUDA_VISIBLE_DEVICES=<GPUs> python main.py --config cfgs/finetune_scan_hardest.yaml \
+--finetune_model --exp_name <output_file_name> --ckpts <path/to/pre-trained/model> --seed $RANDOM
+```
+Fine-tuning on ModelNet40, run:
+```
+CUDA_VISIBLE_DEVICES=<GPUs> python main.py --config cfgs/finetune_modelnet.yaml \
+--finetune_model --exp_name <output_file_name> --ckpts <path/to/pre-trained/model> --seed $RANDOM
+```
+Voting on ModelNet40, run:
+```
+CUDA_VISIBLE_DEVICES=<GPUs> python main.py --test --config cfgs/finetune_modelnet.yaml \
+--exp_name <output_file_name> --ckpts <path/to/best/fine-tuned/model> --seed $RANDOM
+```
+Few-shot learning, run:
+```
+CUDA_VISIBLE_DEVICES=<GPUs> python main.py --config cfgs/fewshot.yaml --finetune_model \
+--ckpts <path/to/pre-trained/model> --exp_name <output_file_name> --way <5 or 10> --shot <10 or 20> --fold <0-9> --seed $RANDOM
+```
+Part segmentation on ShapeNetPart, run:
+```
+cd segmentation
+python main.py --ckpts <path/to/pre-trained/model> --root path/to/data --learning_rate 0.0002 --epoch 300 --seed $RANDOM
+```
+
 ## Visualization
 We use [PointFlowRenderer](https://github.com/zekunhao1995/PointFlowRenderer) repo to render beautiful point cloud image.
 
