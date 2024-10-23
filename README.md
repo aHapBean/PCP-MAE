@@ -17,8 +17,6 @@
  <img src="./figs/overview.jpg" width = "1100"  align=center />
 </div>
 
-<!-- 这图有点糊 -->
-
 ## 📰 News
 
 <!-- - 🍾 Oct, 2024: The corresponding checkpoints are released. -->
@@ -26,11 +24,12 @@
 - 💥 Aug, 2024: PCP-MAE is available in [arxiv](https://arxiv.org/abs/2408.08753).
 - 🎉 Sept, 2024: [**PCP-MAE**](https://arxiv.org/abs/2408.08753) is accepted by NeurIPS 2024 as **spotlight**.
 - 📌 Oct, 2024: The corresponding checkpoints are released in [Google Drive](https://drive.google.com/drive/folders/18E04xV5r4GtjhLGJIc9Ulo1F5DuOTYU6?usp=drive_link) and the code will coming soon.
+- 📌 Oct, 2024: The code has been released.
 
 
 ## ✅ TODO List
 - [ ] Complete the introduction for the PCP-MAE project.
-- [ ] Publish the training and inference code.
+- [x] Publish the training and inference code.
 - [x] Release the checkpoints for pre-training and finetuning.
 
 ## 3. PCP-MAE Models
@@ -50,8 +49,7 @@
 | Few-shot learning | ModelNet40 | [fewshot.yaml](./cfgs/fewshot.yaml) | 97.4 ± 2.3 | 99.1 ± 0.8 | 93.5±3.7 | 95.9±2.7 | [FewShot](https://drive.google.com/drive/folders/1EVvSeAS47Wx0pFUO2UbBbTWOB00NVX2M?usp=drive_link) |
 
 
-The checkpoints and logs have been released on [Google Drive](https://drive.google.com/drive/folders/18E04xV5r4GtjhLGJIc9Ulo1F5DuOTYU6?usp=drive_link). 
-<!-- For fully reproduction of our reported results,  TODO added -->
+The checkpoints and logs have been released on [Google Drive](https://drive.google.com/drive/folders/18E04xV5r4GtjhLGJIc9Ulo1F5DuOTYU6?usp=drive_link). To fully reproduce our reported results, we recommend fine-tuning the pre-trained ckpt-300 with different random seeds (typically 8 different seeds) and recording the best performance which is also adopted by other peer methods (e.g. [Point-MAE](https://github.com/Pang-Yatian/Point-MAE) and [ReCon](https://github.com/qizekun/ReCon)). Occasionally, ckpt-275 may outperform ckpt-300, so we encourage you to try to fine-tune with both ckpt-300 and ckpt-275.
 
 ## Requirements
 PyTorch >= 1.7.0 < 1.11.0;
@@ -87,7 +85,7 @@ pip install "git+https://github.com/erikwijmans/Pointnet2_PyTorch.git#egg=pointn
 
 ## Datasets
 
-We use ShapeNet, ScanObjectNN, ModelNet40 and ShapeNetPart in this work. See [DATASET.md](./DATASET.md) for details. For the S3DIS dataset, check the ACT ([ICLR 2023] Autoencoders as Cross-Modal Teachers: Can Pretrained 2D Image Transformers Help 3D Representation Learning?) for help.
+We use ShapeNet, ScanObjectNN, ModelNet40, ShapeNetPart and S3DIS in this work. See [DATASET.md](./DATASET.md) for details.
 
 ## Pre-training
 To pretrain PCP-MAE on ShapeNet training set, run the following command. If you want to try different models or masking ratios etc., first create a new config file, and pass its path to --config.
@@ -96,10 +94,6 @@ To pretrain PCP-MAE on ShapeNet training set, run the following command. If you 
 CUDA_VISIBLE_DEVICES=<GPU> python main.py --config cfgs/pretrain/base.yaml --exp_name <output_file_name>
 ```
 ## Fine-tuning
-
-To reproduce our results, you can run the experiment multiple times using different random seeds and record the highest accuracy. This procedure is consistent with the reproduction methods used in Point-MAE, ReCon, and other related approaches. 
-
-For clarity, we have provided the log file containing the classification results on the ScanObjectNN dataset in the './experiments' directory. Please note that even with the same seed, running the experiments on different machines may yield varying results.
 
 Fine-tuning on ScanObjectNN, run:
 ```
@@ -124,12 +118,26 @@ CUDA_VISIBLE_DEVICES=<GPUs> python main.py --config cfgs/fewshot.yaml --finetune
 Part segmentation on ShapeNetPart, run:
 ```
 cd segmentation
-python main.py --ckpts <path/to/pre-trained/model> --root path/to/data --learning_rate 0.0002 --epoch 300 --seed $RANDOM
+python main.py --gpu <gpu_id> --ckpts <path/to/pre-trained/model> \
+--log_dir <log_dir> --learning_rate 0.0002 --epoch 300 \
+--root <path/to/data> \
+--seed $RANDOM
+```
+Semantic segmentation on S3DIS, run:
+```
+cd semantic_segmentation
+python main.py --ckpts <path/to/pre-trained/model> \
+--root path/to/data --learning_rate 0.0002 --epoch 60 --gpu <gpu_id> --log_dir <log_dir>
 ```
 
 ## Visualization
-We use [PointFlowRenderer](https://github.com/zekunhao1995/PointFlowRenderer) repo to render beautiful point cloud image.
+Simple visualization, run:
+```
+python main_vis.py --config cfgs/pretrain/base.yaml --exp_name final_vis \
+--ckpts <path/to/pre-trained/model> --test
+```
 
+In addition to the simple method mentioned above for visualizing point clouds, we use the [PointFlowRenderer](https://github.com/zekunhao1995/PointFlowRenderer) repository to render high-quality point cloud images.
 
 ## Contact
 

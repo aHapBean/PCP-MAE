@@ -25,13 +25,13 @@ model : {
   group_size: 32,
   num_group: 64,
   loss: cdl2,
+  
+  # parameters for predicting the centers
   pred_loss: l2, # l2 by default | l2, sml1, cos, l1
   ita: 0.1,  # 0.1 by default
   pred_pos_transformer_layer: 0,  # 0 by default
   add_detach: True,  # True by default 
-  cls_token: False,  # False by default
-  aug: None,  # default None, | scale_translate, jitter, no_aug 
-  ablation: None,  # None by defualt | None, pred_pos_only_to_decoder, MAE_not_pred_pos_but_to_decoder, MAE_pred_pos_not_to_decoder, pred_pos_only, reconstruction_only  share_pos_embed: True,  # True by default
+  
   transformer_config: {
     mask_ratio: 0.6,  
     mask_type: 'rand',
