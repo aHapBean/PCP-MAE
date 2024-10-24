@@ -32,7 +32,7 @@
 - [x] Publish the training and inference code.
 - [x] Release the checkpoints for pre-training and finetuning.
 
-## 3. PCP-MAE Models
+## PCP-MAE Models
 | Task              | Dataset        | Config                                                               | Acc.       | Checkpoints Download                                                                                     |
 |-------------------|----------------|----------------------------------------------------------------------|------------|----------------------------------------------------------------------------------------------------------|
 | Pre-training      | ShapeNet       | [base.yaml](cfgs/pretrain/base.yaml)                        | N.A.       | [Pre-train](https://drive.google.com/drive/folders/1smQMWBBEdMOXVAzIBs3xCBrcyQDg8_GS?usp=drive_link)           |
