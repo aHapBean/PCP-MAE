@@ -97,18 +97,28 @@ CUDA_VISIBLE_DEVICES=<GPU> python main.py --config cfgs/pretrain/base.yaml --exp
 
 Fine-tuning on ScanObjectNN, run:
 ```
+# Select one config from finetune_scan_objbg/objonly/hardest.yaml
 CUDA_VISIBLE_DEVICES=<GPUs> python main.py --config cfgs/finetune_scan_hardest.yaml \
 --finetune_model --exp_name <output_file_name> --ckpts <path/to/pre-trained/model> --seed $RANDOM
+
+
+# Test with fine-tuned ckpt
+CUDA_VISIBLE_DEVICES=<GPUs> python main.py --test --config cfgs/finetune_scan_hardest.yaml \
+--exp_name <output_file_name> --ckpts <path/to/best/fine-tuned/model>
 ```
 Fine-tuning on ModelNet40, run:
 ```
 CUDA_VISIBLE_DEVICES=<GPUs> python main.py --config cfgs/finetune_modelnet.yaml \
 --finetune_model --exp_name <output_file_name> --ckpts <path/to/pre-trained/model> --seed $RANDOM
+
+# Test with fine-tuned ckpt
+CUDA_VISIBLE_DEVICES=<GPUs> python main.py --test --config cfgs/finetune_modelnet.yaml \
+--exp_name <output_file_name> --ckpts <path/to/best/fine-tuned/model>
 ```
 Voting on ModelNet40, run:
 ```
 CUDA_VISIBLE_DEVICES=<GPUs> python main.py --test --config cfgs/finetune_modelnet.yaml \
---exp_name <output_file_name> --ckpts <path/to/best/fine-tuned/model> --seed $RANDOM
+--exp_name <output_file_name> --ckpts <path/to/best/fine-tuned/model> --seed $RANDOM --vote
 ```
 Few-shot learning, run:
 ```
