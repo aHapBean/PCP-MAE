@@ -29,6 +29,7 @@
 - 🎉 Sept, 2024: [**PCP-MAE**](https://arxiv.org/abs/2408.08753) is accepted by NeurIPS 2024 as **spotlight**.
 - 📌 Oct, 2024: The corresponding checkpoints are released in [Google Drive](https://drive.google.com/drive/folders/18E04xV5r4GtjhLGJIc9Ulo1F5DuOTYU6?usp=drive_link) and the code will coming soon.
 - 📌 Oct, 2024: The code has been released.
+- 💡 Nov, 2024: The introduction to PCP-MAE is added.
 
 
 ## ✅ TODO List
