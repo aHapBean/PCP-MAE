@@ -37,7 +37,7 @@
 - [x] Publish the training and inference code.
 - [x] Release the checkpoints for pre-training and finetuning.
 
-## Introduction
+## 🔍 Introduction
 <!-- Masked autoencoder has been widely explored in point cloud self-supervised learning, whereby the point cloud is generally divided into visible and masked parts. These methods typically include an encoder accepting visible patches (normalized) and corresponding patch centers (position) as input, with the decoder accepting the output of the encoder and the centers (position) of the masked parts to reconstruct each point in the masked patches. Then, the pre-trained encoders are used for downstream tasks.  -->
 
 In this paper, we show a motivating empirical result that **when directly feeding the centers of masked patches to the decoder without information from the encoder, it still reconstructs well.** In other words, the centers of patches are important and the reconstruction objective does not necessarily rely on representations of the encoder, thus preventing the encoder from learning semantic representations. 
