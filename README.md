@@ -58,6 +58,11 @@ Our method is of **high pre-training efficiency** compared to other alternatives
     <p>Figure 3: Efficiency and performance comparison.</p>
 </div>
 
+To ensure a fair time comparison, the code for Point-MAE should be modified slightly in two ways:
+
+1. Add "config.dataset.train.others.whole = True" to the training to align [Point-FEMAE](https://github.com/zyh16143998882/AAAI24-PointFEMAE) and our method.
+2. Instead of using KNN_CUDA, change it into the knn_point function (refer to the official code of [ReCon](https://arxiv.org/abs/2302.02318), [Point-FEMAE](https://arxiv.org/abs/2312.10726) or our PCP-MAE) which directly uses torch operation to align with Point-FEMAE and our approach. This will significantly increase the training speed.
+
 ## PCP-MAE Models
 | Task              | Dataset        | Config                                                               | Acc.       | Checkpoints Download                                                                                     |
 |-------------------|----------------|----------------------------------------------------------------------|------------|----------------------------------------------------------------------------------------------------------|
