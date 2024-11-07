@@ -18,6 +18,7 @@
 
 <div  align="center">    
  <img src="./figs/overview.jpg" width = "1100"  align=center />
+ <p>Figure 1: Overview of the proposed PCP-MAE.</p>
 </div>
 
 ## 📰 News
@@ -34,6 +35,28 @@
 - [ ] Complete the introduction for the PCP-MAE project.
 - [x] Publish the training and inference code.
 - [x] Release the checkpoints for pre-training and finetuning.
+
+## Introduction
+<!-- Masked autoencoder has been widely explored in point cloud self-supervised learning, whereby the point cloud is generally divided into visible and masked parts. These methods typically include an encoder accepting visible patches (normalized) and corresponding patch centers (position) as input, with the decoder accepting the output of the encoder and the centers (position) of the masked parts to reconstruct each point in the masked patches. Then, the pre-trained encoders are used for downstream tasks.  -->
+
+In this paper, we show a motivating empirical result that **when directly feeding the centers of masked patches to the decoder without information from the encoder, it still reconstructs well.** In other words, the centers of patches are important and the reconstruction objective does not necessarily rely on representations of the encoder, thus preventing the encoder from learning semantic representations. 
+
+**In short, the [2D MAE](https://arxiv.org/pdf/2111.06377) and [Point-MAE](https://www.ecva.net/papers/eccv_2022/papers_ECCV/papers/136620591.pdf) differ in several aspects, as shown in the figure below.** Therefore, it is inappropriate to directly transfer 2D MAE operations to the 3D domain.
+
+<div align="center">
+    <img src="./figs/comparison.png" width="1100" />
+    <p>Figure 2: When the encoder in Point-MAE is removed, the point cloud can still be reconstructed.</p>
+</div>
+
+Based on this key observation, we propose a simple yet effective method, i.e., learning to Predict Centers for Point Masked AutoEncoders (**PCP-MAE**) which guides the model to learn to predict the significant centers and use the predicted centers to replace the directly provided centers. 
+<!-- Specifically, we propose a Predicting Center Module (PCM) that shares parameters with the original encoder with extra cross-attention to predict centers.  -->
+
+Our method is of **high pre-training efficiency** compared to other alternatives and **achieves great improvement** over Point-MAE, particularly surpassing it by 5.50% on OBJ-BG, 6.03% on OBJ-ONLY, and 5.17% on PB-T50-RS for 3D object classification on the ScanObjectNN dataset.
+
+<div align="center">
+    <img src="./figs/training_comparison.png" width="1100" />
+    <p>Figure 3: Efficiency and performance comparison.</p>
+</div>
 
 ## PCP-MAE Models
 | Task              | Dataset        | Config                                                               | Acc.       | Checkpoints Download                                                                                     |
