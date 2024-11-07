@@ -32,7 +32,7 @@
 
 
 ## ✅ TODO List
-- [ ] Complete the introduction for the PCP-MAE project.
+- [x] Complete the introduction for the PCP-MAE project.
 - [x] Publish the training and inference code.
 - [x] Release the checkpoints for pre-training and finetuning.
 
