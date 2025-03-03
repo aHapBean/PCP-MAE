@@ -192,8 +192,6 @@ def run_net(args, config, train_writer=None, val_writer=None):
         print_log('[Training] EPOCH: %d EpochTime = %.3f (s) Losses = %s lr = %.6f' %
             (epoch,  epoch_end_time - epoch_start_time, ['%.4f' % l for l in losses.avg()],optimizer.param_groups[0]['lr']), logger = logger)
 
-        if epoch == 100 and config.dataset.train._base_.NAME == "ModelNet": # FIXME NOTE here
-            break
         
         if epoch % args.val_freq == 0 and epoch != 0:
             # Validate the current model
